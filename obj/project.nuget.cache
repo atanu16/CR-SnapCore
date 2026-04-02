@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "FO5QybrNT2A=",
+  "success": true,
+  "projectFilePath": "C:\\Test - Copy (2)\\LumaGallery.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\atanu\\.nuget\\packages\\communitytoolkit.mvvm\\8.4.0\\communitytoolkit.mvvm.8.4.0.nupkg.sha512"
+  ],
+  "logs": []
+}

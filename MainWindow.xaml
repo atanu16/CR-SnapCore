@@ -1,0 +1,611 @@
+<Window x:Class="LumaGallery.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="clr-namespace:LumaGallery.ViewModels"
+        xmlns:conv="clr-namespace:LumaGallery.Converters"
+        Title="CR SnapCore"
+        Width="1440" Height="900"
+        MinWidth="960" MinHeight="600"
+        WindowStartupLocation="CenterScreen"
+        WindowStyle="None"
+        AllowsTransparency="True"
+        Background="Transparent"
+        ResizeMode="CanResizeWithGrip"
+        KeyDown="Window_KeyDown">
+
+    <Window.DataContext>
+        <vm:MainViewModel/>
+    </Window.DataContext>
+
+    <Window.Resources>
+        <conv:BoolToVisibilityConverter x:Key="BoolToVis"/>
+        <conv:NullToVisibilityConverter x:Key="NullToVis"/>
+        <conv:ImageCountConverter x:Key="ImgCount"/>
+
+        <!-- Fade-in animation for gallery items -->
+        <Storyboard x:Key="FadeInStoryboard">
+            <DoubleAnimation Storyboard.TargetProperty="Opacity"
+                             From="0" To="1" Duration="0:0:0.35">
+                <DoubleAnimation.EasingFunction>
+                    <CubicEase EasingMode="EaseOut"/>
+                </DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+            <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(TranslateTransform.Y)"
+                             From="20" To="0" Duration="0:0:0.4">
+                <DoubleAnimation.EasingFunction>
+                    <CubicEase EasingMode="EaseOut"/>
+                </DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+        </Storyboard>
+    </Window.Resources>
+
+    <!-- ═══════════════════════════════════════════════════════
+         ROOT CONTAINER — Rounded window with shadow
+         ═══════════════════════════════════════════════════════ -->
+    <Border CornerRadius="12"
+            Background="{StaticResource WindowBgBrush}"
+            BorderBrush="{StaticResource BorderSubtleBrush}"
+            BorderThickness="1"
+            ClipToBounds="True">
+        <Border.Effect>
+            <DropShadowEffect BlurRadius="40" ShadowDepth="0" Opacity="0.5" Color="Black"/>
+        </Border.Effect>
+
+        <Grid>
+            <!-- Main layout -->
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <!-- Sidebar -->
+                    <ColumnDefinition Width="280"/>
+                    <!-- Content area -->
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <!-- ═══════════════════════════════════════════
+                     SIDEBAR — Frosted glass date list
+                     ═══════════════════════════════════════════ -->
+                <Border Grid.Column="0"
+                        Background="{StaticResource SidebarGradient}"
+                        BorderBrush="{StaticResource BorderSubtleBrush}"
+                        BorderThickness="0,0,1,0">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <!-- Title bar area (draggable) -->
+                            <RowDefinition Height="48"/>
+                            <!-- App title -->
+                            <RowDefinition Height="Auto"/>
+                            <!-- Search -->
+                            <RowDefinition Height="Auto"/>
+                            <!-- Date list -->
+                            <RowDefinition Height="*"/>
+                            <!-- Status bar -->
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+
+                        <!-- Title bar drag area -->
+                        <Border Grid.Row="0" Background="Transparent"
+                                MouseLeftButtonDown="TitleBar_MouseLeftButtonDown"/>
+
+                        <!-- App branding -->
+                        <StackPanel Grid.Row="1" Margin="20,4,20,12">
+                            <TextBlock Text="CR SnapCore"
+                                       FontFamily="{StaticResource PrimaryFont}"
+                                       FontSize="{StaticResource FontSizeTitle}"
+                                       FontWeight="SemiBold"
+                                       Foreground="{StaticResource TextPrimaryBrush}"/>
+                            <TextBlock Text="Collection of VM Screenshots"
+                                       FontFamily="{StaticResource PrimaryFont}"
+                                       FontSize="{StaticResource FontSizeCaption}"
+                                       Foreground="{StaticResource TextTertiaryBrush}"
+                                       Margin="0,3,0,0"/>
+                        </StackPanel>
+
+                        <!-- Search box -->
+                        <Grid Grid.Row="2" Margin="14,0,14,12">
+                            <TextBox Style="{StaticResource SearchTextBox}"
+                                     Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}"/>
+                            <!-- Search icon -->
+                            <TextBlock Text="&#xE721;"
+                                       FontFamily="Segoe MDL2 Assets"
+                                       FontSize="13"
+                                       Foreground="{StaticResource TextTertiaryBrush}"
+                                       HorizontalAlignment="Right"
+                                       VerticalAlignment="Center"
+                                       Margin="0,0,12,0"
+                                       IsHitTestVisible="False"/>
+                        </Grid>
+
+                        <!-- Date folders list -->
+                        <ListBox Grid.Row="3"
+                                 ItemsSource="{Binding DateFolders}"
+                                 SelectedItem="{Binding SelectedDateFolder}"
+                                 Background="Transparent"
+                                 BorderThickness="0"
+                                 ItemContainerStyle="{StaticResource SidebarItem}"
+                                 ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                                 VirtualizingPanel.IsVirtualizing="True"
+                                 VirtualizingPanel.VirtualizationMode="Recycling">
+                            <ListBox.ItemTemplate>
+                                <DataTemplate>
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto"/>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="Auto"/>
+                                        </Grid.ColumnDefinitions>
+
+                                        <!-- Calendar icon -->
+                                        <TextBlock Grid.Column="0"
+                                                   Text="&#xE787;"
+                                                   FontFamily="Segoe MDL2 Assets"
+                                                   FontSize="14"
+                                                   VerticalAlignment="Center"
+                                                   Margin="0,0,12,0"
+                                                   Opacity="0.6"/>
+
+                                        <!-- Date display name -->
+                                        <TextBlock Grid.Column="1"
+                                                   Text="{Binding DisplayName}"
+                                                   VerticalAlignment="Center"
+                                                   TextTrimming="CharacterEllipsis"/>
+
+                                        <!-- Image count badge -->
+                                        <Border Grid.Column="2"
+                                                Background="{StaticResource SurfaceBrush}"
+                                                CornerRadius="{StaticResource RadiusPill}"
+                                                Padding="8,2"
+                                                VerticalAlignment="Center"
+                                                Visibility="{Binding TotalImageCount, Converter={StaticResource NullToVis}}">
+                                            <TextBlock Text="{Binding TotalImageCount}"
+                                                       FontSize="11"
+                                                       Foreground="{StaticResource TextTertiaryBrush}"
+                                                       FontWeight="Medium"/>
+                                        </Border>
+                                    </Grid>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                        </ListBox>
+
+                        <!-- Bottom status/refresh -->
+                        <Border Grid.Row="4"
+                                BorderBrush="{StaticResource BorderSubtleBrush}"
+                                BorderThickness="0,1,0,0"
+                                Padding="16,10">
+                            <Grid>
+                                <TextBlock Text="{Binding StatusText}"
+                                           FontFamily="{StaticResource PrimaryFont}"
+                                           FontSize="{StaticResource FontSizeCaption}"
+                                           Foreground="{StaticResource TextTertiaryBrush}"
+                                           VerticalAlignment="Center"/>
+                                <Button Content="&#xE72C;"
+                                        Style="{StaticResource IconButton}"
+                                        Command="{Binding RefreshCommand}"
+                                        HorizontalAlignment="Right"
+                                        ToolTip="Refresh gallery"/>
+                            </Grid>
+                        </Border>
+                    </Grid>
+                </Border>
+
+                <!-- ═══════════════════════════════════════════
+                     MAIN CONTENT AREA
+                     ═══════════════════════════════════════════ -->
+                <Grid Grid.Column="1">
+                    <Grid.RowDefinitions>
+                        <!-- Top bar -->
+                        <RowDefinition Height="48"/>
+                        <!-- Breadcrumb + info -->
+                        <RowDefinition Height="Auto"/>
+                        <!-- Hour tabs -->
+                        <RowDefinition Height="Auto"/>
+                        <!-- Gallery grid -->
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <!-- Top bar (draggable area) -->
+                    <Grid Grid.Row="0">
+                        <Border Background="Transparent"
+                                MouseLeftButtonDown="TitleBar_MouseLeftButtonDown"/>
+                        <!-- Window controls (Windows style) -->
+                        <StackPanel Orientation="Horizontal"
+                                    VerticalAlignment="Center"
+                                    HorizontalAlignment="Right"
+                                    Margin="0,0,16,0">
+                            <!-- Minimize -->
+                            <Button Width="13" Height="13" Cursor="Hand" Click="MinimizeButton_Click" Background="#FEBD2F" BorderThickness="0">
+                                <Button.Template>
+                                    <ControlTemplate TargetType="Button">
+                                        <Border Background="{TemplateBinding Background}" CornerRadius="10">
+                                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                        </Border>
+                                        <ControlTemplate.Triggers>
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter Property="Opacity" Value="0.8"/>
+                                            </Trigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </Button.Template>
+                            </Button>
+                            <!-- Maximize -->
+                            <Button Width="13" Height="13" Cursor="Hand" Click="MaximizeButton_Click" Background="#28C840" BorderThickness="0" Margin="8,0,0,0">
+                                <Button.Template>
+                                    <ControlTemplate TargetType="Button">
+                                        <Border Background="{TemplateBinding Background}" CornerRadius="10">
+                                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                        </Border>
+                                        <ControlTemplate.Triggers>
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter Property="Opacity" Value="0.8"/>
+                                            </Trigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </Button.Template>
+                            </Button>
+                            <!-- Close button -->
+                            <Button Width="13" Height="13" Cursor="Hand" Click="CloseButton_Click" Background="#FF5F57" BorderThickness="0" Margin="8,0,0,0">
+                                <Button.Template>
+                                    <ControlTemplate TargetType="Button">
+                                        <Border Background="{TemplateBinding Background}" CornerRadius="10">
+                                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                        </Border>
+                                        <ControlTemplate.Triggers>
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter Property="Opacity" Value="0.8"/>
+                                            </Trigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </Button.Template>
+                            </Button>
+                        </StackPanel>
+                    </Grid>
+
+                    <!-- Breadcrumb header -->
+                    <Border Grid.Row="1" Padding="28,4,28,16">
+                        <Grid>
+                            <StackPanel>
+                                <TextBlock Text="{Binding BreadcrumbText}"
+                                           FontFamily="{StaticResource PrimaryFont}"
+                                           FontSize="{StaticResource FontSizeHeader}"
+                                           FontWeight="Bold"
+                                           Foreground="{StaticResource TextPrimaryBrush}"/>
+                                <TextBlock FontFamily="{StaticResource PrimaryFont}"
+                                           FontSize="{StaticResource FontSizeCaption}"
+                                           Foreground="{StaticResource TextTertiaryBrush}"
+                                           Margin="0,4,0,0">
+                                    <TextBlock.Text>
+                                        <MultiBinding StringFormat="{}{0} images in this collection">
+                                            <Binding Path="Images.Count"/>
+                                        </MultiBinding>
+                                    </TextBlock.Text>
+                                </TextBlock>
+                            </StackPanel>
+
+                            <!-- View All button -->
+                            <Button Content="View All"
+                                    HorizontalAlignment="Right"
+                                    VerticalAlignment="Center"
+                                    Command="{Binding SelectAllHoursCommand}"
+                                    Visibility="{Binding HasSelectedDate, Converter={StaticResource BoolToVis}}"
+                                    Cursor="Hand"
+                                    FontFamily="{StaticResource PrimaryFont}"
+                                    FontSize="{StaticResource FontSizeCaption}"
+                                    Foreground="{StaticResource TextAccentBrush}">
+                                <Button.Template>
+                                    <ControlTemplate TargetType="Button">
+                                        <Border x:Name="Bd"
+                                                Background="{StaticResource SurfaceBrush}"
+                                                CornerRadius="{StaticResource RadiusSmall}"
+                                                Padding="16,7">
+                                            <ContentPresenter HorizontalAlignment="Center"/>
+                                        </Border>
+                                        <ControlTemplate.Triggers>
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter TargetName="Bd" Property="Background" Value="{StaticResource SurfaceHoverBrush}"/>
+                                            </Trigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </Button.Template>
+                            </Button>
+                        </Grid>
+                    </Border>
+
+                    <!-- Hour tabs (horizontal pill scrolling) -->
+                    <Border Grid.Row="2"
+                            Padding="24,0,24,12"
+                            Visibility="{Binding HasSelectedDate, Converter={StaticResource BoolToVis}}">
+                        <ScrollViewer HorizontalScrollBarVisibility="Auto"
+                                      VerticalScrollBarVisibility="Disabled">
+                            <ItemsControl ItemsSource="{Binding HourFolders}">
+                                <ItemsControl.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <StackPanel Orientation="Horizontal"/>
+                                    </ItemsPanelTemplate>
+                                </ItemsControl.ItemsPanel>
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <RadioButton Style="{StaticResource HourPillButton}"
+                                                     IsChecked="{Binding IsSelected, RelativeSource={RelativeSource AncestorType=ContentPresenter}, Mode=OneWay}"
+                                                     Click="HourTab_Click"
+                                                     Tag="{Binding}">
+                                            <StackPanel Orientation="Horizontal">
+                                                <TextBlock Text="{Binding DisplayName}"/>
+                                                <TextBlock Text="{Binding ImageCount, StringFormat=' ({0})'}"
+                                                           Opacity="0.5"
+                                                           FontSize="11"
+                                                           Margin="2,0,0,0"/>
+                                            </StackPanel>
+                                        </RadioButton>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </ScrollViewer>
+                    </Border>
+
+                    <!-- Gallery Grid -->
+                    <ScrollViewer Grid.Row="3"
+                                  x:Name="GalleryScrollViewer"
+                                  VerticalScrollBarVisibility="Auto"
+                                  HorizontalScrollBarVisibility="Disabled"
+                                  Padding="24,0">
+
+                        <ItemsControl ItemsSource="{Binding Images}"
+                                      x:Name="GalleryItemsControl">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <WrapPanel x:Name="GalleryWrapPanel"
+                                               Margin="4,0,4,24"/>
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Button Style="{StaticResource ImageCard}"
+                                            Command="{Binding DataContext.OpenImageCommand, RelativeSource={RelativeSource AncestorType=Window}}"
+                                            CommandParameter="{Binding}"
+                                            Width="220" Height="200"
+                                            Margin="4"
+                                            Opacity="0"
+                                            RenderTransformOrigin="0.5,0.5"
+                                            Loaded="ImageCard_Loaded">
+                                        <Button.RenderTransform>
+                                            <TranslateTransform Y="20"/>
+                                        </Button.RenderTransform>
+                                        <Grid>
+                                            <!-- Thumbnail image -->
+                                            <Image Source="{Binding Thumbnail}"
+                                                   Stretch="UniformToFill"
+                                                   RenderOptions.BitmapScalingMode="HighQuality"/>
+
+                                            <!-- Loading indicator -->
+                                            <Border Background="{StaticResource CardBgBrush}"
+                                                    Visibility="{Binding IsLoading, Converter={StaticResource BoolToVis}}">
+                                                <TextBlock Text="&#xE722;"
+                                                           FontFamily="Segoe MDL2 Assets"
+                                                           FontSize="24"
+                                                           Foreground="{StaticResource TextTertiaryBrush}"
+                                                           HorizontalAlignment="Center"
+                                                           VerticalAlignment="Center"
+                                                           Opacity="0.4"/>
+                                            </Border>
+
+                                            <!-- Bottom gradient overlay with filename -->
+                                            <Border VerticalAlignment="Bottom">
+                                                <Border.Background>
+                                                    <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                                                        <GradientStop Color="#00000000" Offset="0"/>
+                                                        <GradientStop Color="#AA000000" Offset="1"/>
+                                                    </LinearGradientBrush>
+                                                </Border.Background>
+                                                <TextBlock Text="{Binding FileName}"
+                                                           FontFamily="{StaticResource PrimaryFont}"
+                                                           FontSize="11"
+                                                           Foreground="#CCCCCC"
+                                                           Padding="10,18,10,8"
+                                                           TextTrimming="CharacterEllipsis"/>
+                                            </Border>
+
+                                            <!-- Favorite heart badge -->
+                                            <Border HorizontalAlignment="Right"
+                                                    VerticalAlignment="Top"
+                                                    Margin="0,8,8,0"
+                                                    Visibility="{Binding IsFavorite, Converter={StaticResource BoolToVis}}">
+                                                <TextBlock Text="&#xEB52;"
+                                                           FontFamily="Segoe MDL2 Assets"
+                                                           FontSize="14"
+                                                           Foreground="{StaticResource FavoriteBrush}"/>
+                                            </Border>
+                                        </Grid>
+                                    </Button>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </ScrollViewer>
+
+                    <!-- Empty state -->
+                    <StackPanel Grid.Row="3"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                Visibility="{Binding HasSelectedDate, Converter={StaticResource BoolToVis}, ConverterParameter=Invert}">
+                        <TextBlock Text="&#xEB9F;"
+                                   FontFamily="Segoe MDL2 Assets"
+                                   FontSize="48"
+                                   Foreground="{StaticResource TextTertiaryBrush}"
+                                   HorizontalAlignment="Center"
+                                   Opacity="0.4"/>
+                        <TextBlock Text="Select a date to browse photos"
+                                   FontFamily="{StaticResource PrimaryFont}"
+                                   FontSize="{StaticResource FontSizeSubtitle}"
+                                   Foreground="{StaticResource TextTertiaryBrush}"
+                                   HorizontalAlignment="Center"
+                                   Margin="0,12,0,0"
+                                   Opacity="0.6"/>
+                    </StackPanel>
+
+                    <!-- Loading overlay -->
+                    <Border Grid.Row="3"
+                            Background="#80000000"
+                            Visibility="{Binding IsLoading, Converter={StaticResource BoolToVis}}">
+                        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                            <ProgressBar IsIndeterminate="True"
+                                         Width="120" Height="3"
+                                         Foreground="{StaticResource AccentBrush}"
+                                         Background="{StaticResource SurfaceBrush}"
+                                         BorderThickness="0"/>
+                            <TextBlock Text="Loading..."
+                                       FontFamily="{StaticResource PrimaryFont}"
+                                       FontSize="{StaticResource FontSizeCaption}"
+                                       Foreground="{StaticResource TextTertiaryBrush}"
+                                       HorizontalAlignment="Center"
+                                       Margin="0,10,0,0"/>
+                        </StackPanel>
+                    </Border>
+                </Grid>
+            </Grid>
+
+            <!-- ═══════════════════════════════════════════════════
+                 FULLSCREEN IMAGE VIEWER OVERLAY
+                 ═══════════════════════════════════════════════════ -->
+            <Grid x:Name="ViewerOverlay"
+                  Visibility="{Binding IsViewerOpen, Converter={StaticResource BoolToVis}}"
+                  Background="#E6050508">
+
+                <!-- Blurred dimmed background -->
+                <Border Background="#E6050508"/>
+
+                <!-- Image display area -->
+                <Grid Margin="60,50">
+                    <!-- Centered image with zoom -->
+                    <Border HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            RenderTransformOrigin="0.5,0.5">
+                        <Border.RenderTransform>
+                            <ScaleTransform ScaleX="{Binding ZoomLevel}"
+                                            ScaleY="{Binding ZoomLevel}"/>
+                        </Border.RenderTransform>
+                        <Image Source="{Binding ViewerImage}"
+                               Stretch="Uniform"
+                               RenderOptions.BitmapScalingMode="HighQuality"
+                               MaxWidth="1600"
+                               MaxHeight="900"/>
+                    </Border>
+                </Grid>
+
+                <!-- Left navigation arrow -->
+                <Button Style="{StaticResource ViewerNavButton}"
+                        Content="&#xE76B;"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        Margin="16,0"
+                        Command="{Binding PrevImageCommand}"
+                        ToolTip="Previous (←)"/>
+
+                <!-- Right navigation arrow -->
+                <Button Style="{StaticResource ViewerNavButton}"
+                        Content="&#xE76C;"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Center"
+                        Margin="16,0"
+                        Command="{Binding NextImageCommand}"
+                        ToolTip="Next (→)"/>
+
+                <!-- Top bar with filename and close -->
+                <Border VerticalAlignment="Top" Padding="20,14">
+                    <Border.Background>
+                        <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                            <GradientStop Color="#BB050508" Offset="0"/>
+                            <GradientStop Color="#00050508" Offset="1"/>
+                        </LinearGradientBrush>
+                    </Border.Background>
+                    <Grid>
+                        <!-- Filename -->
+                        <TextBlock Text="{Binding ViewerFileName}"
+                                   FontFamily="{StaticResource PrimaryFont}"
+                                   FontSize="{StaticResource FontSizeBody}"
+                                   Foreground="#CCCCCC"
+                                   VerticalAlignment="Center"
+                                   HorizontalAlignment="Center"/>
+
+                        <!-- Close button -->
+                        <Button Style="{StaticResource ViewerToolButton}"
+                                Content="&#xE711;"
+                                HorizontalAlignment="Right"
+                                Command="{Binding CloseViewerCommand}"
+                                ToolTip="Close (Esc)"
+                                FontSize="18"/>
+                    </Grid>
+                </Border>
+
+                <!-- Bottom toolbar -->
+                <Border VerticalAlignment="Bottom" Padding="20,14">
+                    <Border.Background>
+                        <LinearGradientBrush StartPoint="0,1" EndPoint="0,0">
+                            <GradientStop Color="#BB050508" Offset="0"/>
+                            <GradientStop Color="#00050508" Offset="1"/>
+                        </LinearGradientBrush>
+                    </Border.Background>
+                    <Grid>
+                        <!-- Position indicator -->
+                        <TextBlock Text="{Binding ViewerPositionText}"
+                                   FontFamily="{StaticResource PrimaryFont}"
+                                   FontSize="{StaticResource FontSizeCaption}"
+                                   Foreground="#888888"
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Center"/>
+
+                        <!-- Tool buttons -->
+                        <StackPanel Orientation="Horizontal"
+                                    HorizontalAlignment="Right"
+                                    VerticalAlignment="Center">
+                            <Button Style="{StaticResource ViewerToolButton}"
+                                    Content="&#xE71E;"
+                                    Command="{Binding ZoomOutCommand}"
+                                    ToolTip="Zoom Out (-)"/>
+                            <Button Style="{StaticResource ViewerToolButton}"
+                                    Content="&#xE71D;"
+                                    Command="{Binding ZoomInCommand}"
+                                    ToolTip="Zoom In (+)"/>
+                            <Button Style="{StaticResource ViewerToolButton}"
+                                    Content="&#xEB52;"
+                                    Command="{Binding ToggleFavoriteCommand}"
+                                    ToolTip="Favorite (F)"/>
+                            <Button Style="{StaticResource ViewerToolButton}"
+                                    Content="&#xE946;"
+                                    Command="{Binding ToggleInfoCommand}"
+                                    ToolTip="Info (I)"/>
+                        </StackPanel>
+                    </Grid>
+                </Border>
+
+                <!-- Info overlay panel -->
+                <Border HorizontalAlignment="Right"
+                        VerticalAlignment="Bottom"
+                        Margin="20,0,20,60"
+                        Padding="16,12"
+                        CornerRadius="{StaticResource RadiusMedium}"
+                        Visibility="{Binding ShowInfoOverlay, Converter={StaticResource BoolToVis}}">
+                    <Border.Background>
+                        <SolidColorBrush Color="#1A1A22" Opacity="0.92"/>
+                    </Border.Background>
+                    <TextBlock Text="{Binding ViewerInfo}"
+                               FontFamily="{StaticResource PrimaryFont}"
+                               FontSize="{StaticResource FontSizeCaption}"
+                               Foreground="{StaticResource TextSecondaryBrush}"
+                               LineHeight="18"/>
+                </Border>
+
+                <!-- Mouse wheel zoom handler -->
+                <Border Background="Transparent"
+                        MouseWheel="Viewer_MouseWheel"
+                        MouseLeftButtonDown="ViewerBg_MouseLeftButtonDown"/>
+            </Grid>
+
+            <!-- Resize grip visual -->
+            <Path Data="M 12,0 L 0,12 M 12,4 L 4,12 M 12,8 L 8,12"
+                  Stroke="{StaticResource TextTertiaryBrush}"
+                  StrokeThickness="1"
+                  HorizontalAlignment="Right"
+                  VerticalAlignment="Bottom"
+                  Margin="0,0,4,4"
+                  Opacity="0.3"/>
+        </Grid>
+    </Border>
+</Window>

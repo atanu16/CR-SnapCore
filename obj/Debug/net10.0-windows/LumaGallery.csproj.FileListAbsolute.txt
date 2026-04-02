@@ -1,0 +1,53 @@
+C:\Test\bin\Debug\net10.0-windows\LumaGallery.exe
+C:\Test\bin\Debug\net10.0-windows\LumaGallery.deps.json
+C:\Test\bin\Debug\net10.0-windows\LumaGallery.runtimeconfig.json
+C:\Test\bin\Debug\net10.0-windows\LumaGallery.dll
+C:\Test\bin\Debug\net10.0-windows\LumaGallery.pdb
+C:\Test\bin\Debug\net10.0-windows\CommunityToolkit.Mvvm.dll
+C:\Test\obj\Debug\net10.0-windows\LumaGallery.csproj.AssemblyReference.cache
+C:\Test\obj\Debug\net10.0-windows\Themes\DarkTheme.baml
+C:\Test\obj\Debug\net10.0-windows\App.baml
+C:\Test\obj\Debug\net10.0-windows\MainWindow.g.cs
+C:\Test\obj\Debug\net10.0-windows\App.g.cs
+C:\Test\obj\Debug\net10.0-windows\GeneratedInternalTypeHelper.g.cs
+C:\Test\obj\Debug\net10.0-windows\LumaGallery_MarkupCompile.cache
+C:\Test\obj\Debug\net10.0-windows\LumaGallery_MarkupCompile.lref
+C:\Test\obj\Debug\net10.0-windows\MainWindow.baml
+C:\Test\obj\Debug\net10.0-windows\LumaGallery.g.resources
+C:\Test\obj\Debug\net10.0-windows\LumaGallery.GeneratedMSBuildEditorConfig.editorconfig
+C:\Test\obj\Debug\net10.0-windows\LumaGallery.AssemblyInfoInputs.cache
+C:\Test\obj\Debug\net10.0-windows\LumaGallery.AssemblyInfo.cs
+C:\Test\obj\Debug\net10.0-windows\LumaGallery.csproj.CoreCompileInputs.cache
+C:\Test\obj\Debug\net10.0-windows\LumaGall.AE062AF6.Up2Date
+C:\Test\obj\Debug\net10.0-windows\LumaGallery.dll
+C:\Test\obj\Debug\net10.0-windows\refint\LumaGallery.dll
+C:\Test\obj\Debug\net10.0-windows\LumaGallery.pdb
+C:\Test\obj\Debug\net10.0-windows\LumaGallery.genruntimeconfig.cache
+C:\Test\obj\Debug\net10.0-windows\ref\LumaGallery.dll
+C:\Test - Copy (2)\bin\Debug\net10.0-windows\LumaGallery.exe
+C:\Test - Copy (2)\bin\Debug\net10.0-windows\LumaGallery.deps.json
+C:\Test - Copy (2)\bin\Debug\net10.0-windows\LumaGallery.runtimeconfig.json
+C:\Test - Copy (2)\bin\Debug\net10.0-windows\LumaGallery.dll
+C:\Test - Copy (2)\bin\Debug\net10.0-windows\LumaGallery.pdb
+C:\Test - Copy (2)\bin\Debug\net10.0-windows\CommunityToolkit.Mvvm.dll
+C:\Test - Copy (2)\obj\Debug\net10.0-windows\LumaGallery.csproj.AssemblyReference.cache
+C:\Test - Copy (2)\obj\Debug\net10.0-windows\Themes\DarkTheme.baml
+C:\Test - Copy (2)\obj\Debug\net10.0-windows\App.baml
+C:\Test - Copy (2)\obj\Debug\net10.0-windows\MainWindow.g.cs
+C:\Test - Copy (2)\obj\Debug\net10.0-windows\App.g.cs
+C:\Test - Copy (2)\obj\Debug\net10.0-windows\GeneratedInternalTypeHelper.g.cs
+C:\Test - Copy (2)\obj\Debug\net10.0-windows\LumaGallery_MarkupCompile.cache
+C:\Test - Copy (2)\obj\Debug\net10.0-windows\LumaGallery_MarkupCompile.lref
+C:\Test - Copy (2)\obj\Debug\net10.0-windows\MainWindow.baml
+C:\Test - Copy (2)\obj\Debug\net10.0-windows\LumaGallery.g.resources
+C:\Test - Copy (2)\obj\Debug\net10.0-windows\LumaGallery.GeneratedMSBuildEditorConfig.editorconfig
+C:\Test - Copy (2)\obj\Debug\net10.0-windows\LumaGallery.AssemblyInfoInputs.cache
+C:\Test - Copy (2)\obj\Debug\net10.0-windows\LumaGallery.AssemblyInfo.cs
+C:\Test - Copy (2)\obj\Debug\net10.0-windows\LumaGallery.csproj.CoreCompileInputs.cache
+C:\Test - Copy (2)\obj\Debug\net10.0-windows\LumaGallery.sourcelink.json
+C:\Test - Copy (2)\obj\Debug\net10.0-windows\LumaGall.AE062AF6.Up2Date
+C:\Test - Copy (2)\obj\Debug\net10.0-windows\LumaGallery.dll
+C:\Test - Copy (2)\obj\Debug\net10.0-windows\refint\LumaGallery.dll
+C:\Test - Copy (2)\obj\Debug\net10.0-windows\LumaGallery.pdb
+C:\Test - Copy (2)\obj\Debug\net10.0-windows\LumaGallery.genruntimeconfig.cache
+C:\Test - Copy (2)\obj\Debug\net10.0-windows\ref\LumaGallery.dll
