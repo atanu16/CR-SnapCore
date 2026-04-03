@@ -1,4 +1,5 @@
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Windows.Media.Imaging;
 using LumaGallery.Helpers;
 using LumaGallery.Models;
@@ -23,6 +24,7 @@ public class MainViewModel : ViewModelBase
     public ObservableCollection<DateFolder> DateFolders { get; } = new();
     public ObservableCollection<HourFolder> HourFolders { get; } = new();
     public ObservableCollection<ImageItemViewModel> Images { get; } = new();
+    public ObservableCollection<ImageGroup> ImageGroups { get; } = new();
 
     #endregion
 
@@ -187,6 +189,7 @@ public class MainViewModel : ViewModelBase
     #region Commands
 
     public RelayCommand RefreshCommand { get; }
+    public RelayCommand SelectGroupCommand { get; }
     public RelayCommand OpenImageCommand { get; }
     public RelayCommand CloseViewerCommand { get; }
     public RelayCommand NextImageCommand { get; }
@@ -211,8 +214,11 @@ public class MainViewModel : ViewModelBase
     // Backup of all date folders for search filtering
     private List<DateFolder> _allDateFolders = new();
 
-    // Backup of all images for search filtering
+    // Backup of all images for search/group filtering
     private List<ImageItemViewModel> _allImages = new();
+    private string _selectedGroupName = string.Empty;
+
+    public bool HasImageGroups => ImageGroups.Count > 1;
 
     public MainViewModel()
     {
@@ -221,6 +227,16 @@ public class MainViewModel : ViewModelBase
 
         // Initialize commands
         RefreshCommand = new RelayCommand(async () => await ScanDirectoryAsync());
+        SelectGroupCommand = new RelayCommand(p =>
+        {
+            foreach (var g in ImageGroups) g.IsSelected = false;
+            if (p is ImageGroup grp)
+            {
+                grp.IsSelected = true;
+                _selectedGroupName = grp.Name;
+            }
+            FilterImages();
+        });
         OpenImageCommand = new RelayCommand(p => OpenImage(p as ImageItemViewModel));
         CloseViewerCommand = new RelayCommand(() => CloseViewer());
         NextImageCommand = new RelayCommand(() => NavigateImage(1));
@@ -281,6 +297,9 @@ public class MainViewModel : ViewModelBase
     {
         HourFolders.Clear();
         Images.Clear();
+        ImageGroups.Clear();
+        _selectedGroupName = string.Empty;
+        OnPropertyChanged(nameof(HasImageGroups));
         SelectedHourFolder = null;
 
         if (SelectedDateFolder == null) return;
@@ -324,6 +343,7 @@ public class MainViewModel : ViewModelBase
                 _ = vm.LoadThumbnailAsync();
             }
 
+            BuildImageGroups();
             FilterImages();
             StatusText = $"{_allImages.Count} images";
         }
@@ -368,6 +388,7 @@ public class MainViewModel : ViewModelBase
                 }
             }
 
+            BuildImageGroups();
             FilterImages();
             StatusText = $"{_allImages.Count} images (all hours)";
         }
@@ -388,14 +409,44 @@ public class MainViewModel : ViewModelBase
     {
         Images.Clear();
 
-        var filtered = string.IsNullOrWhiteSpace(SearchImageText)
-            ? _allImages
-            : _allImages.Where(i =>
-                i.FileName.Contains(SearchImageText, StringComparison.OrdinalIgnoreCase))
-            .ToList();
+        var filtered = _allImages.AsEnumerable();
+
+        if (!string.IsNullOrEmpty(_selectedGroupName))
+            filtered = filtered.Where(i => GetImagePrefix(i.FileName) == _selectedGroupName);
+
+        if (!string.IsNullOrWhiteSpace(SearchImageText))
+            filtered = filtered.Where(i =>
+                i.FileName.Contains(SearchImageText, StringComparison.OrdinalIgnoreCase));
 
         foreach (var img in filtered)
             Images.Add(img);
+    }
+
+    private static string GetImagePrefix(string fileName)
+    {
+        var name = Path.GetFileNameWithoutExtension(fileName);
+        var idx = name.IndexOf('_');
+        return idx > 0 ? name[..idx] : name;
+    }
+
+    private void BuildImageGroups()
+    {
+        _selectedGroupName = string.Empty;
+        ImageGroups.Clear();
+
+        var allGroup = new ImageGroup(string.Empty) { IsSelected = true };
+        ImageGroups.Add(allGroup);
+
+        foreach (var prefix in _allImages
+            .Select(i => GetImagePrefix(i.FileName))
+            .Where(p => !string.IsNullOrEmpty(p))
+            .Distinct()
+            .OrderBy(p => p))
+        {
+            ImageGroups.Add(new ImageGroup(prefix));
+        }
+
+        OnPropertyChanged(nameof(HasImageGroups));
     }
 
     /// <summary>

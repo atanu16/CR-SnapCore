@@ -241,6 +241,8 @@
                         <RowDefinition Height="Auto"/>
                         <!-- Image search -->
                         <RowDefinition Height="Auto"/>
+                        <!-- Image group filter -->
+                        <RowDefinition Height="Auto"/>
                         <!-- Gallery grid -->
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
@@ -441,8 +443,34 @@
                         </Grid>
                     </Border>
 
+                    <!-- Image Group Filter -->
+                    <Border Grid.Row="4"
+                            Padding="24,0,24,10"
+                            Visibility="{Binding HasImageGroups, Converter={StaticResource BoolToVis}}">
+                        <ScrollViewer HorizontalScrollBarVisibility="Auto"
+                                      VerticalScrollBarVisibility="Disabled">
+                            <ItemsControl ItemsSource="{Binding ImageGroups}">
+                                <ItemsControl.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <StackPanel Orientation="Horizontal"/>
+                                    </ItemsPanelTemplate>
+                                </ItemsControl.ItemsPanel>
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <RadioButton Style="{DynamicResource HourPillButton}"
+                                                     GroupName="ImageGroupTabs"
+                                                     IsChecked="{Binding IsSelected, Mode=OneWay}"
+                                                     Command="{Binding DataContext.SelectGroupCommand, RelativeSource={RelativeSource AncestorType=Window}}"
+                                                     CommandParameter="{Binding}"
+                                                     Content="{Binding DisplayName}"/>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </ScrollViewer>
+                    </Border>
+
                     <!-- Gallery Grid -->
-                    <ScrollViewer Grid.Row="4"
+                    <ScrollViewer Grid.Row="5"
                                   x:Name="GalleryScrollViewer"
                                   VerticalScrollBarVisibility="Auto"
                                   HorizontalScrollBarVisibility="Disabled"
@@ -521,7 +549,7 @@
                     </ScrollViewer>
 
                     <!-- Empty state -->
-                    <StackPanel Grid.Row="4"
+                    <StackPanel Grid.Row="5"
                                 HorizontalAlignment="Center"
                                 VerticalAlignment="Center"
                                 Visibility="{Binding HasSelectedDate, Converter={StaticResource BoolToVis}, ConverterParameter=Invert}">

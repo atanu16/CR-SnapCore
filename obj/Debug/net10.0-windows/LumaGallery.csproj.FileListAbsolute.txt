@@ -51,11 +51,6 @@ C:\Test - Copy (2)\obj\Debug\net10.0-windows\refint\LumaGallery.dll
 C:\Test - Copy (2)\obj\Debug\net10.0-windows\LumaGallery.pdb
 C:\Test - Copy (2)\obj\Debug\net10.0-windows\LumaGallery.genruntimeconfig.cache
 C:\Test - Copy (2)\obj\Debug\net10.0-windows\ref\LumaGallery.dll
-C:\Users\atanu\OneDrive\Desktop\Test\bin\Debug\net10.0-windows\LumaGallery.exe
-C:\Users\atanu\OneDrive\Desktop\Test\bin\Debug\net10.0-windows\LumaGallery.deps.json
-C:\Users\atanu\OneDrive\Desktop\Test\bin\Debug\net10.0-windows\LumaGallery.runtimeconfig.json
-C:\Users\atanu\OneDrive\Desktop\Test\bin\Debug\net10.0-windows\LumaGallery.dll
-C:\Users\atanu\OneDrive\Desktop\Test\bin\Debug\net10.0-windows\LumaGallery.pdb
 C:\Users\atanu\OneDrive\Desktop\Test\bin\Debug\net10.0-windows\CommunityToolkit.Mvvm.dll
 C:\Users\atanu\OneDrive\Desktop\Test\obj\Debug\net10.0-windows\LumaGallery.csproj.AssemblyReference.cache
 C:\Users\atanu\OneDrive\Desktop\Test\obj\Debug\net10.0-windows\Themes\DarkTheme.baml
@@ -63,19 +58,24 @@ C:\Users\atanu\OneDrive\Desktop\Test\obj\Debug\net10.0-windows\App.baml
 C:\Users\atanu\OneDrive\Desktop\Test\obj\Debug\net10.0-windows\MainWindow.g.cs
 C:\Users\atanu\OneDrive\Desktop\Test\obj\Debug\net10.0-windows\App.g.cs
 C:\Users\atanu\OneDrive\Desktop\Test\obj\Debug\net10.0-windows\GeneratedInternalTypeHelper.g.cs
-C:\Users\atanu\OneDrive\Desktop\Test\obj\Debug\net10.0-windows\LumaGallery_MarkupCompile.cache
-C:\Users\atanu\OneDrive\Desktop\Test\obj\Debug\net10.0-windows\LumaGallery_MarkupCompile.lref
 C:\Users\atanu\OneDrive\Desktop\Test\obj\Debug\net10.0-windows\MainWindow.baml
-C:\Users\atanu\OneDrive\Desktop\Test\obj\Debug\net10.0-windows\LumaGallery.g.resources
 C:\Users\atanu\OneDrive\Desktop\Test\obj\Debug\net10.0-windows\LumaGallery.GeneratedMSBuildEditorConfig.editorconfig
 C:\Users\atanu\OneDrive\Desktop\Test\obj\Debug\net10.0-windows\LumaGallery.AssemblyInfoInputs.cache
 C:\Users\atanu\OneDrive\Desktop\Test\obj\Debug\net10.0-windows\LumaGallery.AssemblyInfo.cs
 C:\Users\atanu\OneDrive\Desktop\Test\obj\Debug\net10.0-windows\LumaGallery.csproj.CoreCompileInputs.cache
 C:\Users\atanu\OneDrive\Desktop\Test\obj\Debug\net10.0-windows\LumaGall.AE062AF6.Up2Date
-C:\Users\atanu\OneDrive\Desktop\Test\obj\Debug\net10.0-windows\LumaGallery.dll
-C:\Users\atanu\OneDrive\Desktop\Test\obj\Debug\net10.0-windows\refint\LumaGallery.dll
-C:\Users\atanu\OneDrive\Desktop\Test\obj\Debug\net10.0-windows\LumaGallery.pdb
 C:\Users\atanu\OneDrive\Desktop\Test\obj\Debug\net10.0-windows\LumaGallery.genruntimeconfig.cache
-C:\Users\atanu\OneDrive\Desktop\Test\obj\Debug\net10.0-windows\ref\LumaGallery.dll
 C:\Users\atanu\OneDrive\Desktop\Test\obj\Debug\net10.0-windows\LumaGallery.sourcelink.json
 C:\Users\atanu\OneDrive\Desktop\Test\obj\Debug\net10.0-windows\Themes\LightTheme.baml
+C:\Users\atanu\OneDrive\Desktop\Test\bin\Debug\net10.0-windows\CR SnapCore.exe
+C:\Users\atanu\OneDrive\Desktop\Test\bin\Debug\net10.0-windows\CR SnapCore.deps.json
+C:\Users\atanu\OneDrive\Desktop\Test\bin\Debug\net10.0-windows\CR SnapCore.runtimeconfig.json
+C:\Users\atanu\OneDrive\Desktop\Test\bin\Debug\net10.0-windows\CR SnapCore.dll
+C:\Users\atanu\OneDrive\Desktop\Test\bin\Debug\net10.0-windows\CR SnapCore.pdb
+C:\Users\atanu\OneDrive\Desktop\Test\obj\Debug\net10.0-windows\CR SnapCore_MarkupCompile.cache
+C:\Users\atanu\OneDrive\Desktop\Test\obj\Debug\net10.0-windows\CR SnapCore_MarkupCompile.lref
+C:\Users\atanu\OneDrive\Desktop\Test\obj\Debug\net10.0-windows\CR SnapCore.g.resources
+C:\Users\atanu\OneDrive\Desktop\Test\obj\Debug\net10.0-windows\CR SnapCore.dll
+C:\Users\atanu\OneDrive\Desktop\Test\obj\Debug\net10.0-windows\refint\CR SnapCore.dll
+C:\Users\atanu\OneDrive\Desktop\Test\obj\Debug\net10.0-windows\CR SnapCore.pdb
+C:\Users\atanu\OneDrive\Desktop\Test\obj\Debug\net10.0-windows\ref\CR SnapCore.dll
