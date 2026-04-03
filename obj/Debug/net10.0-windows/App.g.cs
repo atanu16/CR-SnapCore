@@ -57,7 +57,7 @@ namespace LumaGallery {
             
             #line default
             #line hidden
-            System.Uri resourceLocater = new System.Uri("/LumaGallery;V1.0.0.0;component/app.xaml", System.UriKind.Relative);
+            System.Uri resourceLocater = new System.Uri("/CR SnapCore;V1.0.0.0;component/app.xaml", System.UriKind.Relative);
             
             #line 1 "..\..\..\App.xaml"
             System.Windows.Application.LoadComponent(this, resourceLocater);

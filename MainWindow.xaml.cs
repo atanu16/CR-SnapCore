@@ -52,11 +52,61 @@ public partial class MainWindow : Window
         ToggleMaximize();
     }
 
+    private bool _isAnimatedMaximized;
+    private Rect _restoreBounds;
+
     private void ToggleMaximize()
     {
-        WindowState = WindowState == WindowState.Maximized
-            ? WindowState.Normal
-            : WindowState.Maximized;
+        if (_isAnimatedMaximized)
+            AnimateRestore();
+        else
+            AnimateMaximize();
+    }
+
+    private void AnimateMaximize()
+    {
+        _restoreBounds = new Rect(Left, Top, Width, Height);
+
+        var workArea = SystemParameters.WorkArea;
+        var ease = new CubicEase { EasingMode = EasingMode.EaseOut };
+        var duration = TimeSpan.FromMilliseconds(260);
+
+        AnimateWindowProp(LeftProperty, workArea.Left, duration, ease);
+        AnimateWindowProp(TopProperty, workArea.Top, duration, ease);
+        AnimateWindowProp(WidthProperty, workArea.Width, duration, ease);
+        AnimateWindowProp(HeightProperty, workArea.Height, duration, ease);
+
+        _isAnimatedMaximized = true;
+    }
+
+    private void AnimateRestore()
+    {
+        var ease = new CubicEase { EasingMode = EasingMode.EaseOut };
+        var duration = TimeSpan.FromMilliseconds(260);
+
+        AnimateWindowProp(LeftProperty, _restoreBounds.X, duration, ease);
+        AnimateWindowProp(TopProperty, _restoreBounds.Y, duration, ease);
+        AnimateWindowProp(WidthProperty, _restoreBounds.Width, duration, ease);
+        AnimateWindowProp(HeightProperty, _restoreBounds.Height, duration, ease);
+
+        _isAnimatedMaximized = false;
+    }
+
+    private void AnimateWindowProp(DependencyProperty prop, double to, TimeSpan duration, IEasingFunction ease)
+    {
+        var anim = new DoubleAnimation
+        {
+            To = to,
+            Duration = duration,
+            EasingFunction = ease,
+            FillBehavior = FillBehavior.Stop
+        };
+        anim.Completed += (_, _) =>
+        {
+            BeginAnimation(prop, null);
+            SetValue(prop, to);
+        };
+        BeginAnimation(prop, anim);
     }
 
     #endregion

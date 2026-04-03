@@ -1,10 +1,14 @@
 {
   "version": 2,
-  "dgSpecHash": "FO5QybrNT2A=",
+  "dgSpecHash": "O5Kt/ONbABo=",
   "success": true,
-  "projectFilePath": "C:\\Test - Copy (2)\\LumaGallery.csproj",
+  "projectFilePath": "C:\\Users\\atanu\\OneDrive\\Desktop\\Test\\LumaGallery.csproj",
   "expectedPackageFiles": [
-    "C:\\Users\\atanu\\.nuget\\packages\\communitytoolkit.mvvm\\8.4.0\\communitytoolkit.mvvm.8.4.0.nupkg.sha512"
+    "C:\\Users\\atanu\\.nuget\\packages\\communitytoolkit.mvvm\\8.4.0\\communitytoolkit.mvvm.8.4.0.nupkg.sha512",
+    "C:\\Users\\atanu\\.nuget\\packages\\microsoft.net.illink.tasks\\10.0.3\\microsoft.net.illink.tasks.10.0.3.nupkg.sha512",
+    "C:\\Users\\atanu\\.nuget\\packages\\microsoft.netcore.app.runtime.win-x64\\10.0.3\\microsoft.netcore.app.runtime.win-x64.10.0.3.nupkg.sha512",
+    "C:\\Users\\atanu\\.nuget\\packages\\microsoft.windowsdesktop.app.runtime.win-x64\\10.0.3\\microsoft.windowsdesktop.app.runtime.win-x64.10.0.3.nupkg.sha512",
+    "C:\\Users\\atanu\\.nuget\\packages\\microsoft.aspnetcore.app.runtime.win-x64\\10.0.3\\microsoft.aspnetcore.app.runtime.win-x64.10.0.3.nupkg.sha512"
   ],
   "logs": []
 }

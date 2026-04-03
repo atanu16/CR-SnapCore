@@ -4,17 +4,17 @@
 winexe
 C#
 .cs
-C:\Test - Copy (2)\obj\Debug\net10.0-windows\
+C:\Users\atanu\OneDrive\Desktop\Test\obj\Debug\net10.0-windows\
 LumaGallery
 none
 false
 TRACE;DEBUG;NET;NET10_0;NETCOREAPP;WINDOWS;WINDOWS7_0;NET5_0_OR_GREATER;NET6_0_OR_GREATER;NET7_0_OR_GREATER;NET8_0_OR_GREATER;NET9_0_OR_GREATER;NET10_0_OR_GREATER;NETCOREAPP3_0_OR_GREATER;NETCOREAPP3_1_OR_GREATER;WINDOWS7_0_OR_GREATER
-C:\Test - Copy (2)\App.xaml
-2463866462
+C:\Users\atanu\OneDrive\Desktop\Test\App.xaml
+3560956000
 
-171134402850
+18-361861378
 207-1619796559
-MainWindow.xaml;Themes\DarkTheme.xaml;
+MainWindow.xaml;Themes\DarkTheme.xaml;Themes\LightTheme.xaml;
 
 True
 

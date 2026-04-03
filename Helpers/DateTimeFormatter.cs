@@ -4,7 +4,7 @@ namespace LumaGallery.Helpers;
 
 /// <summary>
 /// Converts raw folder names into human-readable date and time strings.
-/// Date format: DDMMYYYY → "DD Month YYYY"
+/// Date format: MMDDYYYY → "DD Month YYYY"
 /// Hour format: 0–23 → "H:00 AM/PM"
 /// </summary>
 public static class DateTimeFormatter
@@ -16,16 +16,16 @@ public static class DateTimeFormatter
     };
 
     /// <summary>
-    /// Converts a DDMMYYYY folder name to a formatted date string.
-    /// Example: "25022026" → "25 February 2026"
+    /// Converts a MMDDYYYY folder name to a formatted date string.
+    /// Example: "02252026" → "25 February 2026"
     /// </summary>
     public static string FormatDateFolder(string rawName)
     {
         if (string.IsNullOrWhiteSpace(rawName) || rawName.Length != 8)
             return rawName;
 
-        if (!int.TryParse(rawName[..2], out int day) ||
-            !int.TryParse(rawName[2..4], out int month) ||
+        if (!int.TryParse(rawName[..2], out int month) ||
+            !int.TryParse(rawName[2..4], out int day) ||
             !int.TryParse(rawName[4..], out int year))
             return rawName;
 
@@ -36,14 +36,14 @@ public static class DateTimeFormatter
     }
 
     /// <summary>
-    /// Parses a DDMMYYYY folder name into a DateTime.
+    /// Parses a MMDDYYYY folder name into a DateTime.
     /// </summary>
     public static DateTime ParseDateFolder(string rawName)
     {
         if (string.IsNullOrWhiteSpace(rawName) || rawName.Length != 8)
             return DateTime.MinValue;
 
-        if (DateTime.TryParseExact(rawName, "ddMMyyyy",
+        if (DateTime.TryParseExact(rawName, "MMddyyyy",
             CultureInfo.InvariantCulture, DateTimeStyles.None, out var date))
             return date;
 

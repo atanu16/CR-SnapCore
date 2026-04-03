@@ -6,16 +6,14 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <UseWPF>true</UseWPF>
-    <AssemblyName>LumaGallery</AssemblyName>
+    <AssemblyName>CR SnapCore</AssemblyName>
     <RootNamespace>LumaGallery</RootNamespace>
+    <Product>CR SnapCore</Product>
+    <ApplicationIcon/>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Resource Include="Assets\**" />
   </ItemGroup>
 
 </Project>

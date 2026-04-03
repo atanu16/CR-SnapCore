@@ -16,7 +16,7 @@ public class MainViewModel : ViewModelBase
     private readonly ThumbnailService _thumbnailService;
 
     // Root path to scan
-    private string _rootPath = @"C:\OLD";
+    private string _rootPath = @"\\moh-nt-file1\MOH\Shared Projects\CI_Private\CR\VM_WORKS";
 
     #region Collections
 
@@ -156,6 +156,17 @@ public class MainViewModel : ViewModelBase
         }
     }
 
+    private string _searchImageText = string.Empty;
+    public string SearchImageText
+    {
+        get => _searchImageText;
+        set
+        {
+            if (SetProperty(ref _searchImageText, value))
+                FilterImages();
+        }
+    }
+
     public string SelectedDateDisplay => SelectedDateFolder?.DisplayName ?? "Select a date";
     public string SelectedTimeDisplay => SelectedHourFolder?.DisplayName ?? "";
     public bool HasSelectedDate => SelectedDateFolder != null;
@@ -186,11 +197,22 @@ public class MainViewModel : ViewModelBase
     public RelayCommand ResetZoomCommand { get; }
     public RelayCommand ToggleInfoCommand { get; }
     public RelayCommand SelectAllHoursCommand { get; }
+    public RelayCommand ToggleThemeCommand { get; }
+
+    private bool _isDarkMode = true;
+    public bool IsDarkMode
+    {
+        get => _isDarkMode;
+        set => SetProperty(ref _isDarkMode, value);
+    }
 
     #endregion
 
     // Backup of all date folders for search filtering
     private List<DateFolder> _allDateFolders = new();
+
+    // Backup of all images for search filtering
+    private List<ImageItemViewModel> _allImages = new();
 
     public MainViewModel()
     {
@@ -209,6 +231,11 @@ public class MainViewModel : ViewModelBase
         ResetZoomCommand = new RelayCommand(() => ZoomLevel = 1.0);
         ToggleInfoCommand = new RelayCommand(() => ShowInfoOverlay = !ShowInfoOverlay);
         SelectAllHoursCommand = new RelayCommand(() => LoadAllImagesForDate());
+        ToggleThemeCommand = new RelayCommand(() =>
+        {
+            IsDarkMode = !IsDarkMode;
+            ThemeService.Apply(IsDarkMode);
+        });
 
         // Auto-scan on startup
         _ = ScanDirectoryAsync();
@@ -274,6 +301,7 @@ public class MainViewModel : ViewModelBase
     private async Task LoadImagesAsync()
     {
         Images.Clear();
+        _allImages.Clear();
 
         if (SelectedDateFolder == null || SelectedHourFolder == null) return;
 
@@ -291,12 +319,13 @@ public class MainViewModel : ViewModelBase
             foreach (var img in images)
             {
                 var vm = new ImageItemViewModel(img, _thumbnailService);
-                Images.Add(vm);
+                _allImages.Add(vm);
                 // Fire-and-forget thumbnail loading for each image
                 _ = vm.LoadThumbnailAsync();
             }
 
-            StatusText = $"{Images.Count} images";
+            FilterImages();
+            StatusText = $"{_allImages.Count} images";
         }
         catch (Exception ex)
         {
@@ -316,6 +345,7 @@ public class MainViewModel : ViewModelBase
         if (SelectedDateFolder == null) return;
 
         Images.Clear();
+        _allImages.Clear();
         SelectedHourFolder = null;
         IsLoading = true;
         StatusText = "Loading all images...";
@@ -333,12 +363,13 @@ public class MainViewModel : ViewModelBase
                 foreach (var img in images)
                 {
                     var vm = new ImageItemViewModel(img, _thumbnailService);
-                    Images.Add(vm);
+                    _allImages.Add(vm);
                     _ = vm.LoadThumbnailAsync();
                 }
             }
 
-            StatusText = $"{Images.Count} images (all hours)";
+            FilterImages();
+            StatusText = $"{_allImages.Count} images (all hours)";
         }
         catch (Exception ex)
         {
@@ -348,6 +379,23 @@ public class MainViewModel : ViewModelBase
         {
             IsLoading = false;
         }
+    }
+
+    /// <summary>
+    /// Filters images based on search image text.
+    /// </summary>
+    private void FilterImages()
+    {
+        Images.Clear();
+
+        var filtered = string.IsNullOrWhiteSpace(SearchImageText)
+            ? _allImages
+            : _allImages.Where(i =>
+                i.FileName.Contains(SearchImageText, StringComparison.OrdinalIgnoreCase))
+            .ToList();
+
+        foreach (var img in filtered)
+            Images.Add(img);
     }
 
     /// <summary>

@@ -10,12 +10,12 @@
 using System;
 using System.Reflection;
 
-[assembly: System.Reflection.AssemblyCompanyAttribute("LumaGallery")]
+[assembly: System.Reflection.AssemblyCompanyAttribute("CR SnapCore")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+c7a079f83f4908140195e5ed3d6fc1bc8dea27ea")]
-[assembly: System.Reflection.AssemblyProductAttribute("LumaGallery")]
-[assembly: System.Reflection.AssemblyTitleAttribute("LumaGallery")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+de77ff4b81b84026a41edd081a5cdb96d15897ba")]
+[assembly: System.Reflection.AssemblyProductAttribute("CR SnapCore")]
+[assembly: System.Reflection.AssemblyTitleAttribute("CR SnapCore")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
 [assembly: System.Runtime.Versioning.TargetPlatformAttribute("Windows7.0")]
 [assembly: System.Runtime.Versioning.SupportedOSPlatformAttribute("Windows7.0")]

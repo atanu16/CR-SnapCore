@@ -42,11 +42,46 @@
     <!-- ═══════════════════════════════════════════════════════
          ROOT CONTAINER — Rounded window with shadow
          ═══════════════════════════════════════════════════════ -->
-    <Border CornerRadius="12"
-            Background="{StaticResource WindowBgBrush}"
-            BorderBrush="{StaticResource BorderSubtleBrush}"
+    <Border x:Name="RootBorder"
+            CornerRadius="0"
+            Background="{DynamicResource WindowBgBrush}"
+            BorderBrush="{DynamicResource BorderSubtleBrush}"
             BorderThickness="1"
-            ClipToBounds="True">
+            ClipToBounds="True"
+            Opacity="0"
+            RenderTransformOrigin="0.5,0.5">
+        <Border.RenderTransform>
+            <ScaleTransform ScaleX="0.97" ScaleY="0.97"/>
+        </Border.RenderTransform>
+        <Border.Triggers>
+            <EventTrigger RoutedEvent="Loaded">
+                <BeginStoryboard>
+                    <Storyboard>
+                        <DoubleAnimation Storyboard.TargetProperty="Opacity"
+                                         From="0" To="1"
+                                         Duration="0:0:0.35">
+                            <DoubleAnimation.EasingFunction>
+                                <CubicEase EasingMode="EaseOut"/>
+                            </DoubleAnimation.EasingFunction>
+                        </DoubleAnimation>
+                        <DoubleAnimation Storyboard.TargetProperty="RenderTransform.ScaleX"
+                                         From="0.97" To="1"
+                                         Duration="0:0:0.35">
+                            <DoubleAnimation.EasingFunction>
+                                <CubicEase EasingMode="EaseOut"/>
+                            </DoubleAnimation.EasingFunction>
+                        </DoubleAnimation>
+                        <DoubleAnimation Storyboard.TargetProperty="RenderTransform.ScaleY"
+                                         From="0.97" To="1"
+                                         Duration="0:0:0.35">
+                            <DoubleAnimation.EasingFunction>
+                                <CubicEase EasingMode="EaseOut"/>
+                            </DoubleAnimation.EasingFunction>
+                        </DoubleAnimation>
+                    </Storyboard>
+                </BeginStoryboard>
+            </EventTrigger>
+        </Border.Triggers>
         <Border.Effect>
             <DropShadowEffect BlurRadius="40" ShadowDepth="0" Opacity="0.5" Color="Black"/>
         </Border.Effect>
@@ -65,8 +100,8 @@
                      SIDEBAR — Frosted glass date list
                      ═══════════════════════════════════════════ -->
                 <Border Grid.Column="0"
-                        Background="{StaticResource SidebarGradient}"
-                        BorderBrush="{StaticResource BorderSubtleBrush}"
+                        Background="{DynamicResource SidebarGradient}"
+                        BorderBrush="{DynamicResource BorderSubtleBrush}"
                         BorderThickness="0,0,1,0">
                     <Grid>
                         <Grid.RowDefinitions>
@@ -89,26 +124,26 @@
                         <!-- App branding -->
                         <StackPanel Grid.Row="1" Margin="20,4,20,12">
                             <TextBlock Text="CR SnapCore"
-                                       FontFamily="{StaticResource PrimaryFont}"
-                                       FontSize="{StaticResource FontSizeTitle}"
+                                       FontFamily="{DynamicResource PrimaryFont}"
+                                       FontSize="{DynamicResource FontSizeTitle}"
                                        FontWeight="SemiBold"
-                                       Foreground="{StaticResource TextPrimaryBrush}"/>
+                                       Foreground="{DynamicResource TextPrimaryBrush}"/>
                             <TextBlock Text="Collection of VM Screenshots"
-                                       FontFamily="{StaticResource PrimaryFont}"
-                                       FontSize="{StaticResource FontSizeCaption}"
-                                       Foreground="{StaticResource TextTertiaryBrush}"
+                                       FontFamily="{DynamicResource PrimaryFont}"
+                                       FontSize="{DynamicResource FontSizeCaption}"
+                                       Foreground="{DynamicResource TextTertiaryBrush}"
                                        Margin="0,3,0,0"/>
                         </StackPanel>
 
                         <!-- Search box -->
                         <Grid Grid.Row="2" Margin="14,0,14,12">
-                            <TextBox Style="{StaticResource SearchTextBox}"
+                            <TextBox Style="{DynamicResource SearchTextBox}"
                                      Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}"/>
                             <!-- Search icon -->
                             <TextBlock Text="&#xE721;"
                                        FontFamily="Segoe MDL2 Assets"
                                        FontSize="13"
-                                       Foreground="{StaticResource TextTertiaryBrush}"
+                                       Foreground="{DynamicResource TextTertiaryBrush}"
                                        HorizontalAlignment="Right"
                                        VerticalAlignment="Center"
                                        Margin="0,0,12,0"
@@ -121,10 +156,16 @@
                                  SelectedItem="{Binding SelectedDateFolder}"
                                  Background="Transparent"
                                  BorderThickness="0"
-                                 ItemContainerStyle="{StaticResource SidebarItem}"
+                                 ItemContainerStyle="{DynamicResource SidebarItem}"
                                  ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                                  VirtualizingPanel.IsVirtualizing="True"
                                  VirtualizingPanel.VirtualizationMode="Recycling">
+                            <ListBox.Resources>
+                                <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="Transparent"/>
+                                <SolidColorBrush x:Key="{x:Static SystemColors.HighlightTextBrushKey}" Color="Transparent"/>
+                                <SolidColorBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightBrushKey}" Color="Transparent"/>
+                                <SolidColorBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightTextBrushKey}" Color="Transparent"/>
+                            </ListBox.Resources>
                             <ListBox.ItemTemplate>
                                 <DataTemplate>
                                     <Grid>
@@ -151,14 +192,14 @@
 
                                         <!-- Image count badge -->
                                         <Border Grid.Column="2"
-                                                Background="{StaticResource SurfaceBrush}"
-                                                CornerRadius="{StaticResource RadiusPill}"
+                                                Background="{DynamicResource SurfaceBrush}"
+                                                CornerRadius="{DynamicResource RadiusPill}"
                                                 Padding="8,2"
                                                 VerticalAlignment="Center"
                                                 Visibility="{Binding TotalImageCount, Converter={StaticResource NullToVis}}">
                                             <TextBlock Text="{Binding TotalImageCount}"
                                                        FontSize="11"
-                                                       Foreground="{StaticResource TextTertiaryBrush}"
+                                                       Foreground="{DynamicResource TextTertiaryBrush}"
                                                        FontWeight="Medium"/>
                                         </Border>
                                     </Grid>
@@ -168,17 +209,17 @@
 
                         <!-- Bottom status/refresh -->
                         <Border Grid.Row="4"
-                                BorderBrush="{StaticResource BorderSubtleBrush}"
+                                BorderBrush="{DynamicResource BorderSubtleBrush}"
                                 BorderThickness="0,1,0,0"
                                 Padding="16,10">
                             <Grid>
                                 <TextBlock Text="{Binding StatusText}"
-                                           FontFamily="{StaticResource PrimaryFont}"
-                                           FontSize="{StaticResource FontSizeCaption}"
-                                           Foreground="{StaticResource TextTertiaryBrush}"
+                                           FontFamily="{DynamicResource PrimaryFont}"
+                                           FontSize="{DynamicResource FontSizeCaption}"
+                                           Foreground="{DynamicResource TextTertiaryBrush}"
                                            VerticalAlignment="Center"/>
                                 <Button Content="&#xE72C;"
-                                        Style="{StaticResource IconButton}"
+                                        Style="{DynamicResource IconButton}"
                                         Command="{Binding RefreshCommand}"
                                         HorizontalAlignment="Right"
                                         ToolTip="Refresh gallery"/>
@@ -198,6 +239,8 @@
                         <RowDefinition Height="Auto"/>
                         <!-- Hour tabs -->
                         <RowDefinition Height="Auto"/>
+                        <!-- Image search -->
+                        <RowDefinition Height="Auto"/>
                         <!-- Gallery grid -->
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
@@ -206,11 +249,50 @@
                     <Grid Grid.Row="0">
                         <Border Background="Transparent"
                                 MouseLeftButtonDown="TitleBar_MouseLeftButtonDown"/>
-                        <!-- Window controls (Windows style) -->
+
+                        <!-- Window controls + theme toggle -->
                         <StackPanel Orientation="Horizontal"
                                     VerticalAlignment="Center"
                                     HorizontalAlignment="Right"
                                     Margin="0,0,16,0">
+
+                            <!-- Theme toggle -->
+                            <Button Width="28" Height="28" Cursor="Hand"
+                                    Command="{Binding ToggleThemeCommand}"
+                                    BorderThickness="0"
+                                    Margin="0,0,10,0"
+                                    ToolTip="Toggle light / dark mode">
+                                <Button.Template>
+                                    <ControlTemplate TargetType="Button">
+                                        <Border x:Name="Bd" Background="Transparent" CornerRadius="14">
+                                            <Grid>
+                                                <!-- Sun icon = currently dark, click → light -->
+                                                <TextBlock Text="&#xE706;"
+                                                           FontFamily="Segoe MDL2 Assets"
+                                                           FontSize="14"
+                                                           Foreground="{DynamicResource TextSecondaryBrush}"
+                                                           HorizontalAlignment="Center"
+                                                           VerticalAlignment="Center"
+                                                           Visibility="{Binding IsDarkMode, Converter={StaticResource BoolToVis}}"/>
+                                                <!-- Moon icon = currently light, click → dark -->
+                                                <TextBlock Text="&#xE708;"
+                                                           FontFamily="Segoe MDL2 Assets"
+                                                           FontSize="14"
+                                                           Foreground="{DynamicResource TextSecondaryBrush}"
+                                                           HorizontalAlignment="Center"
+                                                           VerticalAlignment="Center"
+                                                           Visibility="{Binding IsDarkMode, Converter={StaticResource BoolToVis}, ConverterParameter=Invert}"/>
+                                            </Grid>
+                                        </Border>
+                                        <ControlTemplate.Triggers>
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter TargetName="Bd" Property="Background" Value="{DynamicResource SurfaceBrush}"/>
+                                            </Trigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </Button.Template>
+                            </Button>
+
                             <!-- Minimize -->
                             <Button Width="13" Height="13" Cursor="Hand" Click="MinimizeButton_Click" Background="#FEBD2F" BorderThickness="0">
                                 <Button.Template>
@@ -241,7 +323,7 @@
                                     </ControlTemplate>
                                 </Button.Template>
                             </Button>
-                            <!-- Close button -->
+                            <!-- Close -->
                             <Button Width="13" Height="13" Cursor="Hand" Click="CloseButton_Click" Background="#FF5F57" BorderThickness="0" Margin="8,0,0,0">
                                 <Button.Template>
                                     <ControlTemplate TargetType="Button">
@@ -264,13 +346,13 @@
                         <Grid>
                             <StackPanel>
                                 <TextBlock Text="{Binding BreadcrumbText}"
-                                           FontFamily="{StaticResource PrimaryFont}"
-                                           FontSize="{StaticResource FontSizeHeader}"
+                                           FontFamily="{DynamicResource PrimaryFont}"
+                                           FontSize="{DynamicResource FontSizeHeader}"
                                            FontWeight="Bold"
-                                           Foreground="{StaticResource TextPrimaryBrush}"/>
-                                <TextBlock FontFamily="{StaticResource PrimaryFont}"
-                                           FontSize="{StaticResource FontSizeCaption}"
-                                           Foreground="{StaticResource TextTertiaryBrush}"
+                                           Foreground="{DynamicResource TextPrimaryBrush}"/>
+                                <TextBlock FontFamily="{DynamicResource PrimaryFont}"
+                                           FontSize="{DynamicResource FontSizeCaption}"
+                                           Foreground="{DynamicResource TextTertiaryBrush}"
                                            Margin="0,4,0,0">
                                     <TextBlock.Text>
                                         <MultiBinding StringFormat="{}{0} images in this collection">
@@ -287,20 +369,20 @@
                                     Command="{Binding SelectAllHoursCommand}"
                                     Visibility="{Binding HasSelectedDate, Converter={StaticResource BoolToVis}}"
                                     Cursor="Hand"
-                                    FontFamily="{StaticResource PrimaryFont}"
-                                    FontSize="{StaticResource FontSizeCaption}"
-                                    Foreground="{StaticResource TextAccentBrush}">
+                                    FontFamily="{DynamicResource PrimaryFont}"
+                                    FontSize="{DynamicResource FontSizeCaption}"
+                                    Foreground="{DynamicResource TextAccentBrush}">
                                 <Button.Template>
                                     <ControlTemplate TargetType="Button">
                                         <Border x:Name="Bd"
-                                                Background="{StaticResource SurfaceBrush}"
-                                                CornerRadius="{StaticResource RadiusSmall}"
+                                                Background="{DynamicResource SurfaceBrush}"
+                                                CornerRadius="{DynamicResource RadiusSmall}"
                                                 Padding="16,7">
                                             <ContentPresenter HorizontalAlignment="Center"/>
                                         </Border>
                                         <ControlTemplate.Triggers>
                                             <Trigger Property="IsMouseOver" Value="True">
-                                                <Setter TargetName="Bd" Property="Background" Value="{StaticResource SurfaceHoverBrush}"/>
+                                                <Setter TargetName="Bd" Property="Background" Value="{DynamicResource SurfaceHoverBrush}"/>
                                             </Trigger>
                                         </ControlTemplate.Triggers>
                                     </ControlTemplate>
@@ -323,7 +405,7 @@
                                 </ItemsControl.ItemsPanel>
                                 <ItemsControl.ItemTemplate>
                                     <DataTemplate>
-                                        <RadioButton Style="{StaticResource HourPillButton}"
+                                        <RadioButton Style="{DynamicResource HourPillButton}"
                                                      IsChecked="{Binding IsSelected, RelativeSource={RelativeSource AncestorType=ContentPresenter}, Mode=OneWay}"
                                                      Click="HourTab_Click"
                                                      Tag="{Binding}">
@@ -341,8 +423,26 @@
                         </ScrollViewer>
                     </Border>
 
+                    <!-- Image Search -->
+                    <Border Grid.Row="3"
+                            Padding="24,0,24,10"
+                            Visibility="{Binding HasSelectedDate, Converter={StaticResource BoolToVis}}">
+                        <Grid>
+                            <TextBox Style="{DynamicResource SearchTextBox}"
+                                     Text="{Binding SearchImageText, UpdateSourceTrigger=PropertyChanged}"/>
+                            <TextBlock Text="&#xE721;"
+                                       FontFamily="Segoe MDL2 Assets"
+                                       FontSize="13"
+                                       Foreground="{DynamicResource TextTertiaryBrush}"
+                                       HorizontalAlignment="Right"
+                                       VerticalAlignment="Center"
+                                       Margin="0,0,12,0"
+                                       IsHitTestVisible="False"/>
+                        </Grid>
+                    </Border>
+
                     <!-- Gallery Grid -->
-                    <ScrollViewer Grid.Row="3"
+                    <ScrollViewer Grid.Row="4"
                                   x:Name="GalleryScrollViewer"
                                   VerticalScrollBarVisibility="Auto"
                                   HorizontalScrollBarVisibility="Disabled"
@@ -358,7 +458,7 @@
                             </ItemsControl.ItemsPanel>
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>
-                                    <Button Style="{StaticResource ImageCard}"
+                                    <Button Style="{DynamicResource ImageCard}"
                                             Command="{Binding DataContext.OpenImageCommand, RelativeSource={RelativeSource AncestorType=Window}}"
                                             CommandParameter="{Binding}"
                                             Width="220" Height="200"
@@ -376,12 +476,12 @@
                                                    RenderOptions.BitmapScalingMode="HighQuality"/>
 
                                             <!-- Loading indicator -->
-                                            <Border Background="{StaticResource CardBgBrush}"
+                                            <Border Background="{DynamicResource CardBgBrush}"
                                                     Visibility="{Binding IsLoading, Converter={StaticResource BoolToVis}}">
                                                 <TextBlock Text="&#xE722;"
                                                            FontFamily="Segoe MDL2 Assets"
                                                            FontSize="24"
-                                                           Foreground="{StaticResource TextTertiaryBrush}"
+                                                           Foreground="{DynamicResource TextTertiaryBrush}"
                                                            HorizontalAlignment="Center"
                                                            VerticalAlignment="Center"
                                                            Opacity="0.4"/>
@@ -396,7 +496,7 @@
                                                     </LinearGradientBrush>
                                                 </Border.Background>
                                                 <TextBlock Text="{Binding FileName}"
-                                                           FontFamily="{StaticResource PrimaryFont}"
+                                                           FontFamily="{DynamicResource PrimaryFont}"
                                                            FontSize="11"
                                                            Foreground="#CCCCCC"
                                                            Padding="10,18,10,8"
@@ -411,7 +511,7 @@
                                                 <TextBlock Text="&#xEB52;"
                                                            FontFamily="Segoe MDL2 Assets"
                                                            FontSize="14"
-                                                           Foreground="{StaticResource FavoriteBrush}"/>
+                                                           Foreground="{DynamicResource FavoriteBrush}"/>
                                             </Border>
                                         </Grid>
                                     </Button>
@@ -421,20 +521,20 @@
                     </ScrollViewer>
 
                     <!-- Empty state -->
-                    <StackPanel Grid.Row="3"
+                    <StackPanel Grid.Row="4"
                                 HorizontalAlignment="Center"
                                 VerticalAlignment="Center"
                                 Visibility="{Binding HasSelectedDate, Converter={StaticResource BoolToVis}, ConverterParameter=Invert}">
                         <TextBlock Text="&#xEB9F;"
                                    FontFamily="Segoe MDL2 Assets"
                                    FontSize="48"
-                                   Foreground="{StaticResource TextTertiaryBrush}"
+                                   Foreground="{DynamicResource TextTertiaryBrush}"
                                    HorizontalAlignment="Center"
                                    Opacity="0.4"/>
                         <TextBlock Text="Select a date to browse photos"
-                                   FontFamily="{StaticResource PrimaryFont}"
-                                   FontSize="{StaticResource FontSizeSubtitle}"
-                                   Foreground="{StaticResource TextTertiaryBrush}"
+                                   FontFamily="{DynamicResource PrimaryFont}"
+                                   FontSize="{DynamicResource FontSizeSubtitle}"
+                                   Foreground="{DynamicResource TextTertiaryBrush}"
                                    HorizontalAlignment="Center"
                                    Margin="0,12,0,0"
                                    Opacity="0.6"/>
@@ -447,13 +547,13 @@
                         <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
                             <ProgressBar IsIndeterminate="True"
                                          Width="120" Height="3"
-                                         Foreground="{StaticResource AccentBrush}"
-                                         Background="{StaticResource SurfaceBrush}"
+                                         Foreground="{DynamicResource AccentBrush}"
+                                         Background="{DynamicResource SurfaceBrush}"
                                          BorderThickness="0"/>
                             <TextBlock Text="Loading..."
-                                       FontFamily="{StaticResource PrimaryFont}"
-                                       FontSize="{StaticResource FontSizeCaption}"
-                                       Foreground="{StaticResource TextTertiaryBrush}"
+                                       FontFamily="{DynamicResource PrimaryFont}"
+                                       FontSize="{DynamicResource FontSizeCaption}"
+                                       Foreground="{DynamicResource TextTertiaryBrush}"
                                        HorizontalAlignment="Center"
                                        Margin="0,10,0,0"/>
                         </StackPanel>
@@ -490,7 +590,7 @@
                 </Grid>
 
                 <!-- Left navigation arrow -->
-                <Button Style="{StaticResource ViewerNavButton}"
+                <Button Style="{DynamicResource ViewerNavButton}"
                         Content="&#xE76B;"
                         HorizontalAlignment="Left"
                         VerticalAlignment="Center"
@@ -499,7 +599,7 @@
                         ToolTip="Previous (←)"/>
 
                 <!-- Right navigation arrow -->
-                <Button Style="{StaticResource ViewerNavButton}"
+                <Button Style="{DynamicResource ViewerNavButton}"
                         Content="&#xE76C;"
                         HorizontalAlignment="Right"
                         VerticalAlignment="Center"
@@ -518,14 +618,14 @@
                     <Grid>
                         <!-- Filename -->
                         <TextBlock Text="{Binding ViewerFileName}"
-                                   FontFamily="{StaticResource PrimaryFont}"
-                                   FontSize="{StaticResource FontSizeBody}"
+                                   FontFamily="{DynamicResource PrimaryFont}"
+                                   FontSize="{DynamicResource FontSizeBody}"
                                    Foreground="#CCCCCC"
                                    VerticalAlignment="Center"
                                    HorizontalAlignment="Center"/>
 
                         <!-- Close button -->
-                        <Button Style="{StaticResource ViewerToolButton}"
+                        <Button Style="{DynamicResource ViewerToolButton}"
                                 Content="&#xE711;"
                                 HorizontalAlignment="Right"
                                 Command="{Binding CloseViewerCommand}"
@@ -545,8 +645,8 @@
                     <Grid>
                         <!-- Position indicator -->
                         <TextBlock Text="{Binding ViewerPositionText}"
-                                   FontFamily="{StaticResource PrimaryFont}"
-                                   FontSize="{StaticResource FontSizeCaption}"
+                                   FontFamily="{DynamicResource PrimaryFont}"
+                                   FontSize="{DynamicResource FontSizeCaption}"
                                    Foreground="#888888"
                                    HorizontalAlignment="Center"
                                    VerticalAlignment="Center"/>
@@ -555,19 +655,19 @@
                         <StackPanel Orientation="Horizontal"
                                     HorizontalAlignment="Right"
                                     VerticalAlignment="Center">
-                            <Button Style="{StaticResource ViewerToolButton}"
+                            <Button Style="{DynamicResource ViewerToolButton}"
                                     Content="&#xE71E;"
                                     Command="{Binding ZoomOutCommand}"
                                     ToolTip="Zoom Out (-)"/>
-                            <Button Style="{StaticResource ViewerToolButton}"
+                            <Button Style="{DynamicResource ViewerToolButton}"
                                     Content="&#xE71D;"
                                     Command="{Binding ZoomInCommand}"
                                     ToolTip="Zoom In (+)"/>
-                            <Button Style="{StaticResource ViewerToolButton}"
+                            <Button Style="{DynamicResource ViewerToolButton}"
                                     Content="&#xEB52;"
                                     Command="{Binding ToggleFavoriteCommand}"
                                     ToolTip="Favorite (F)"/>
-                            <Button Style="{StaticResource ViewerToolButton}"
+                            <Button Style="{DynamicResource ViewerToolButton}"
                                     Content="&#xE946;"
                                     Command="{Binding ToggleInfoCommand}"
                                     ToolTip="Info (I)"/>
@@ -580,15 +680,15 @@
                         VerticalAlignment="Bottom"
                         Margin="20,0,20,60"
                         Padding="16,12"
-                        CornerRadius="{StaticResource RadiusMedium}"
+                        CornerRadius="{DynamicResource RadiusMedium}"
                         Visibility="{Binding ShowInfoOverlay, Converter={StaticResource BoolToVis}}">
                     <Border.Background>
                         <SolidColorBrush Color="#1A1A22" Opacity="0.92"/>
                     </Border.Background>
                     <TextBlock Text="{Binding ViewerInfo}"
-                               FontFamily="{StaticResource PrimaryFont}"
-                               FontSize="{StaticResource FontSizeCaption}"
-                               Foreground="{StaticResource TextSecondaryBrush}"
+                               FontFamily="{DynamicResource PrimaryFont}"
+                               FontSize="{DynamicResource FontSizeCaption}"
+                               Foreground="{DynamicResource TextSecondaryBrush}"
                                LineHeight="18"/>
                 </Border>
 
@@ -600,7 +700,7 @@
 
             <!-- Resize grip visual -->
             <Path Data="M 12,0 L 0,12 M 12,4 L 4,12 M 12,8 L 8,12"
-                  Stroke="{StaticResource TextTertiaryBrush}"
+                  Stroke="{DynamicResource TextTertiaryBrush}"
                   StrokeThickness="1"
                   HorizontalAlignment="Right"
                   VerticalAlignment="Bottom"

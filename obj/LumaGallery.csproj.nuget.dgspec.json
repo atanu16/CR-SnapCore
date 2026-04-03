@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Test - Copy (2)\\LumaGallery.csproj": {}
+    "C:\\Users\\atanu\\OneDrive\\Desktop\\Test\\LumaGallery.csproj": {}
   },
   "projects": {
-    "C:\\Test - Copy (2)\\LumaGallery.csproj": {
+    "C:\\Users\\atanu\\OneDrive\\Desktop\\Test\\LumaGallery.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Test - Copy (2)\\LumaGallery.csproj",
-        "projectName": "LumaGallery",
-        "projectPath": "C:\\Test - Copy (2)\\LumaGallery.csproj",
+        "projectUniqueName": "C:\\Users\\atanu\\OneDrive\\Desktop\\Test\\LumaGallery.csproj",
+        "projectName": "CR SnapCore",
+        "projectPath": "C:\\Users\\atanu\\OneDrive\\Desktop\\Test\\LumaGallery.csproj",
         "packagesPath": "C:\\Users\\atanu\\.nuget\\packages\\",
-        "outputPath": "C:\\Test - Copy (2)\\obj\\",
+        "outputPath": "C:\\Users\\atanu\\OneDrive\\Desktop\\Test\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -51,6 +51,12 @@
             "CommunityToolkit.Mvvm": {
               "target": "Package",
               "version": "[8.4.0, )"
+            },
+            "Microsoft.NET.ILLink.Tasks": {
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[10.0.3, )",
+              "autoReferenced": true
             }
           },
           "imports": [
@@ -64,6 +70,20 @@
           ],
           "assetTargetFallback": true,
           "warn": true,
+          "downloadDependencies": [
+            {
+              "name": "Microsoft.AspNetCore.App.Runtime.win-x64",
+              "version": "[10.0.3, 10.0.3]"
+            },
+            {
+              "name": "Microsoft.NETCore.App.Runtime.win-x64",
+              "version": "[10.0.3, 10.0.3]"
+            },
+            {
+              "name": "Microsoft.WindowsDesktop.App.Runtime.win-x64",
+              "version": "[10.0.3, 10.0.3]"
+            }
+          ],
           "frameworkReferences": {
             "Microsoft.NETCore.App": {
               "privateAssets": "all"
@@ -363,6 +383,11 @@
             "System.Xml.XPath": "(,4.3.32767]",
             "System.Xml.XPath.XDocument": "(,5.0.32767]"
           }
+        }
+      },
+      "runtimes": {
+        "win-x64": {
+          "#import": []
         }
       }
     }
